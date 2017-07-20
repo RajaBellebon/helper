@@ -1,0 +1,1974 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Domain Search Service" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="AuthServiceURL" elementType="Argument">
+            <stringProp name="Argument.name">AuthServiceURL</stringProp>
+            <stringProp name="Argument.value">auth.domain.com.au/v1/connect/token</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="AuthCode" elementType="Argument">
+            <stringProp name="Argument.name">AuthCode</stringProp>
+            <stringProp name="Argument.value">Basic ZGVza3RvcC1zaXRlOjc3NGQwYTU4OTZmYzQ4ZmE5NmJiMjI5MjRmODViMzNj</stringProp>
+            <stringProp name="Argument.desc">Auth code sent with access token request</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Scopes" elementType="Argument">
+            <stringProp name="Argument.name">Scopes</stringProp>
+            <stringProp name="Argument.value">search-listings</stringProp>
+            <stringProp name="Argument.desc">Scopes requested with access token</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="BaseURL" elementType="Argument">
+            <stringProp name="Argument.name">BaseURL</stringProp>
+            <stringProp name="Argument.value">search-m-api.domain.com.au</stringProp>
+            <stringProp name="Argument.desc">Service under Test URL</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="Access Token Request" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1469771232000</longProp>
+        <longProp name="ThreadGroup.end_time">1469771232000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Stage - Getting Access Token" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">grant_type=client_credentials&amp;scope=${Scopes}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${AuthServiceURL}</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header with authorization" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">${AuthCode}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract AccessToken (RegEx)" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">Token</stringProp>
+            <stringProp name="RegexExtractor.regex"> &quot;access_token&quot;: &quot;(.+?)&quot;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default"></stringProp>
+            <stringProp name="RegexExtractor.match_number"></stringProp>
+          </RegexExtractor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">String _accessToken = &quot;Bearer&quot; + &quot; &quot; + vars.get(&quot;Token&quot;);
+//vars.put(&quot;accessToken&quot;, _accessToken);
+props.put(&quot;AccessTokenP&quot;, _accessToken)
+</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Search Requests Group - Main Setings Users and Iterations" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">10</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1469683625000</longProp>
+        <longProp name="ThreadGroup.end_time">1469683625000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+            </value>
+          </objProp>
+          <stringProp name="filename">abc</stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+            </value>
+          </objProp>
+          <stringProp name="filename">abc</stringProp>
+          <boolProp name="useGroupName">true</boolProp>
+        </ResultCollector>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Sale Suburb data - CSV" enabled="true">
+          <stringProp name="delimiter">,</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="filename">SalesListingCountBySuburb.csv</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="variableNames">saleListingCount,saleSuburbName</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Rent Suburb Data - CSV" enabled="true">
+          <stringProp name="filename">rentalCountBysuburb.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">rentListingsCount,rentSuburbName</stringProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="States &amp; Regions Data - CSV" enabled="true">
+          <stringProp name="filename">States.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">stateName,regionName</stringProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header with Access Token" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">${__property(AccessTokenP)}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1. V2 - Search &quot;For Sale&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Sale&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;suburb&quot;: &quot;${saleSuburbName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2. V2 - Search &quot;For Rent&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Rent&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;suburb&quot;: &quot;${rentSuburbName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="3. V2 - Search &quot;Sold&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Sold&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;suburb&quot;: &quot;${saleSuburbName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="4. V2 - Search &quot;Share&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Share&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;suburb&quot;: &quot;${rentSuburbName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="5. V2 - Search &quot;New Homes&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Sale&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;NewApartments&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;suburb&quot;: &quot;${saleSuburbName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="6. V2 - Search &quot;TopSpot&quot; properties for Sale : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+   &quot;Mode&quot;: &quot;Buy&quot;,&#xd;
+   &quot;Locations&quot;: [&#xd;
+       {&#xd;
+           &quot;Suburb&quot;: &quot;${saleSuburbName}&quot;&#xd;
+       }&#xd;
+   ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/topspot/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="7. V2 - Search &quot;TopSpot&quot; properties for Rent : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+   &quot;Mode&quot;: &quot;Rent&quot;,&#xd;
+   &quot;Locations&quot;: [&#xd;
+       {&#xd;
+           &quot;Suburb&quot;: &quot;${rentSuburbName}&quot;&#xd;
+       }&#xd;
+   ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/topspot/search/</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="8. V2 - Search &quot;For Sale&quot; properties : filter &gt; State" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Sale&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;state&quot;: &quot;${stateName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="9. V2 - Search &quot;For Rent&quot; properties : filter &gt; State" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Rent&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;state&quot;: &quot;${stateName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10. V2 - Search &quot;For Sale&quot; properties : filter &gt; Region" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Sale&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;Region&quot;: &quot;${regionName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="11. V2 - Search &quot;For Rent&quot; properties : filter &gt; Region" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;listingType&quot;: &quot;Rent&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minLandArea&quot;: 0,&#xd;
+  &quot;maxLandArea&quot;: 21000000,&#xd;
+  &quot;advertiserIds&quot;: [&#xd;
+  &#xd;
+  ],&#xd;
+  &quot;adIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+    &#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+ &#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+&#xd;
+      &quot;Region&quot;: &quot;${regionName}&quot;,&#xd;
+&#xd;
+      &quot;includeSurroundingSuburbs&quot;: false&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;locationTerms&quot;: &quot;&quot;,&#xd;
+  &quot;keywords&quot;: [&#xd;
+    &quot;&quot;&#xd;
+  ],&#xd;
+  &quot;listingAttributes&quot;: [&#xd;
+    &quot;HasPhotos&quot;&#xd;
+  ],&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;sort&quot;: {&#xd;
+    &quot;sortKey&quot;: &quot;Default&quot;,&#xd;
+    &quot;direction&quot;: &quot;Ascending&quot;,&#xd;
+   &quot;proximityTo&quot;: {&#xd;
+    &quot;lat&quot;: 0,&#xd;
+     &quot;lon&quot;: 0&#xd;
+   }&#xd;
+ },&#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;pageSize&quot;: 200,&#xd;
+&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v2/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="12. V1 - Search &quot;For Sale&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Buy&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;suburb&quot;: &quot;SYDNEY&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="13. V1 - Search &quot;For Rent&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Rent&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;suburb&quot;: &quot;SYDNEY&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="14. V1 - Search &quot;Sold&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Sold&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;suburb&quot;: &quot;COOGEE&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="15. V1 - Search &quot;Share&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Share&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;suburb&quot;: &quot;SYDNEY&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="16. V1 - Search &quot;New Homes&quot; properties : filter &gt; Suburb" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Buy&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+     &quot;suburb&quot;: &quot;SYDNEY OLYMPIC PARK&quot;&#xd;
+     &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: true,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="17. V1 - Search &quot;For Sale&quot; properties : filter &gt; State" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Buy&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="18. V1 - Search &quot;For Rent&quot; properties : filter &gt; State" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Rent&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;QLD&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="19. V1 - Search &quot;For Sale&quot; properties : filter &gt; Region" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Buy&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;region&quot;: &quot;Sydney Region&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="20. V1 - Search &quot;For Rent&quot; properties : filter &gt; Region" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;mode&quot;: &quot;Buy&quot;,&#xd;
+  &quot;minBedrooms&quot;: 0,&#xd;
+  &quot;maxBedrooms&quot;: 5,&#xd;
+  &quot;minBathrooms&quot;: 0,&#xd;
+  &quot;maxBathrooms&quot;: 6,&#xd;
+  &quot;minCarspaces&quot;: 0,&#xd;
+  &quot;maxCarspaces&quot;: 6,&#xd;
+  &quot;energyRating&quot;: 0,&#xd;
+  &quot;hasFloorPlan&quot;: false,&#xd;
+  &quot;topSpotEligibleOnly&quot;: false,&#xd;
+  &quot;minPrice&quot;: 0,&#xd;
+  &quot;maxPrice&quot;: 20000000,&#xd;
+  &quot;minArea&quot;: 0,&#xd;
+  &quot;maxArea&quot;: 21000000,&#xd;
+  &quot;agencyIds&quot;: [],&#xd;
+  &quot;adIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;excludeAdIds&quot;: [&#xd;
+  ],&#xd;
+  &quot;propertyTypes&quot;: [&#xd;
+    &quot;ApartmentUnitFlat&quot;&#xd;
+  ],&#xd;
+  &quot;propertyFeatures&quot;: [&#xd;
+ &#xd;
+  ],&#xd;
+  &quot;lifeStyles&quot;: [&#xd;
+  ],&#xd;
+  &quot;locations&quot;: [&#xd;
+    {&#xd;
+     &quot;state&quot;: &quot;NSW&quot;,&#xd;
+      &quot;region&quot;: &quot;Sydney Region&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;searchterm&quot;: &quot;&quot;,&#xd;
+  &quot;typeOfListing&quot;: &quot;All&quot;,&#xd;
+  &quot;listingAttributes&quot;: [ ],&#xd;
+  &quot;newDevOnly&quot;: false,&#xd;
+  &quot;includeSurroundingSuburbs&quot;: true,&#xd;
+  &quot;inspectionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;inspectionTo&quot;: &quot;&quot;,&#xd;
+  &quot;auctionFrom&quot;: &quot;&quot;,&#xd;
+  &quot;auctionTo&quot;: &quot;&quot;,&#xd;
+  &quot;updatedSince&quot;: &quot;&quot;,&#xd;
+  &quot;soldFrom&quot;: &quot;&quot;,&#xd;
+  &quot;soldTo&quot;: &quot;&quot;,&#xd;
+  &#xd;
+  &quot;page&quot;: 1,&#xd;
+  &quot;size&quot;: 200&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${BaseURL}/v1/listings/search</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert - Code Returned is 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

@@ -1,0 +1,13 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,grpThreads,allThreads,Latency,IdleTime
+1473128885971,1111,Stage - Getting Access Token,200,OK,Access Token Request 1-1,text,true,,1066,1,1,1111,0
+1473128887148,1454,"1. Stage - Search ""For Sale"" properties : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,250392,1,1,942,0
+1473128888604,847,"2. Stage - Search ""For Rent"" properties : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,243636,1,1,441,0
+1473128889452,636,"3. Stage - Search ""Sold"" properties : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,275623,1,1,141,0
+1473128890090,65,"4. Stage - Search ""Share"" properties : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,13012,1,1,62,0
+1473128890156,81,"5. Stage - Search ""New Homes"" properties : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,14780,1,1,79,0
+1473128890239,135,"6. Stage - Search ""TopSpot"" properties for Sale : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,21305,1,1,100,0
+1473128890375,92,"7. Stage - Search ""TopSpot"" properties for Rent : filter > Suburb",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,21305,1,1,57,0
+1473128890470,777,"8. Stage - Search ""For Sale"" properties : filter > State",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,509556,1,1,232,0
+1473128891249,699,"9. Stage - Search ""For Rent"" properties : filter > State",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,446132,1,1,204,0
+1473128891950,908,"10. Stage - Search ""For Sale"" properties : filter > Region",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,508390,1,1,244,0
+1473128892859,640,"11. Stage - Search ""For Rent"" properties : filter > Region",200,OK,Search Requests Group - Main Setings Users and Iterations 1-1,text,true,,445916,1,1,186,0

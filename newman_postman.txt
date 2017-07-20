@@ -1,0 +1,82 @@
+		
+newman run `"$($testFile.FullName)`" --reporters "cli,html,junit" --reporter-junit-export `"$resultsPath\$collectionName.xml`" --reporter-html-export `"$resultsPath\$collectionName.html`" --iteration-count 1 --environment $environmentPath -x
+
+
+newman run C:\\API_Tests\\domain-integrationtests\\search-service\\SearchCount.postman_collection.json --reporters "junit" --reporter-junit-export C:\\seo-data-analytics-testing\\DomainSEO\\Count.xml --environment C:\\API_Tests\\domain-integrationtests\\search-service\\environments\\SearchService-Prod-New.postman_environment.json -x
+
+------------------------------------------------------------------------
+How to get a token and store it in a global variable
+
+POST {{AuthURL}}
+Headers
+-------
+Authorization {{Identity_Authorization}}
+
+Body
+----
+grant_type client_credentials
+scope search-listings
+
+Tests:
+------
+tests["Status code is 200"] = responseCode.code === 200;
+
+
+var data = JSON.parse(responseBody);
+
+tests["Token is returned successfully"] = responseBody.has("access_token");
+
+//Setting access token for subsequent requests
+postman.setEnvironmentVariable("AccessToken", data.token_type + " " + data.access_token);
+
+Global variable stored:
+AuthURL
+https://stage-auth.domain.com.au/v1/connect/token
+Identity_Authorization
+Basic ZGVza3RvcC1zaXRlOmJlODc5N2M3NDQwNzRjZTM4YWZjZDRiMzI3YTU2N2Jh
+BaseURL
+https://stage-search-api.domain.com.au
+AccessToken
+Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IllUVGpBTDBmZS1VWng2MDdCYkFBTm9yZjV3dyIsImtpZCI6IllUVGpBTDBmZS1VWng2MDdCYkFBTm9yZjV3dyJ9.eyJpc3MiOiJodHRwczovL3N0YWdlLWF1dGguZG9tYWluLmNvbS5hdS92MSIsImF1ZCI6Imh0dHBzOi8vc3RhZ2UtYXV0aC5kb21haW4uY29tLmF1L3YxL3Jlc291cmNlcyIsImV4cCI6MTUwMDQ1MjA3OSwibmJmIjoxNTAwNDM3Njc5LCJjbGllbnRfaWQiOiJkZXNrdG9wLXNpdGUiLCJzY29wZSI6InNlYXJjaC1saXN0aW5ncyIsImp0aSI6IjVkYjE5YTE5N2U0ZGYzZjc1MDFhOTVhY2E3ZGUzY2QzIn0.PUd3bf1XCqq4EuJQIpBS0oMyPCghFphKCZQzrA59HHtm6dELo7KMDvjv5iyqZpCC3TGT99cDnrtH-tRtkZmqc-H8MwSfDF0Oxwnic6DDL_pcjpZTPcmuHA4ogk9eNdzYczjik0QlUkdNIoL7b0bb-YrRg1_HSGYvNNw7heDmEyo8jTIxA3EbPFgfax3MdZw1ndNnd2ZvTElFAxYTHWSMsGFfSyJ6mlhwQn7XgNoNn_VLGLrskkRNEwjr4vd-XLi7ukA8WUKmZMtOqz3trb9i5k0Vi6lITNHXcFRhFznBmaLkwDkqN5iCbREgkOlxzwqul2u60c8xy6qd2yhV7NT5Sw
+
+
+
+Using Eval() to pass a function:
+
+1. Define your check function into a Setup folder and create request to health point for example: http://stage-listing-admin-api.domain.com.au/health
+In the body part:
+```function CheckResponseAndResults (responseTimeCheck, numberOfResultsCheck)
+{
+    tests["Status code: " + responseCode.code] = responseCode.code === 200 ;
+    if (responseCode.code === 200)
+    {
+    
+        body = JSON.parse(responseBody);
+
+        resultsNumber = Number (body.totalResults);
+        
+        tests["SLA < " + responseTimeCheck + ", the current value is " +  responseTime + 'ms'] = responseTime < responseTimeCheck;
+        
+	    tests[resultsNumber + " Results are returned for the request submitted"] = resultsNumber > numberOfResultsCheck ;
+	    
+	}
+	else
+    {
+    	tests["[More Info]:" + responseBody ] = true ;
+    }
+}```
+
+in the tests part:
+
+postman.setEnvironmentVariable("GlobalFunctionCheck" , request.data) ;
+tests["GlobalFunctionCheck  is set in environment"] = true ;
+
+When you use it in the test request:
+
+var GlobalCheck = postman.getEnvironmentVariable("GlobalFunctionCheck");
+eval(GlobalCheck);   
+
+var responseTimeCheck = 2000
+var numberOfResultsCheck = -1;
+
+CheckResponseAndResults (responseTimeCheck, numberOfResultsCheck);

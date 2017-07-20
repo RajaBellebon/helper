@@ -1,0 +1,14 @@
+ responseCode(url) {
+      fetch(url).then((response) => {
+        const status = response.status;
+        const statusText = response.statusText;
+        if (status !== 200) {
+          throw Error(status, statusText);
+        }
+      }).then(() => {
+        console.log('Response code OK'); // eslint-disable-line no-console
+      }).catch((error) => {
+        console.log(error); // eslint-disable-line no-console
+      });
+      return this;
+    },

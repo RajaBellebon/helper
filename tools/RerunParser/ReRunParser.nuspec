@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Domain.Testing.ReRunParser</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Raja Bellebon</authors>
+    <owners>Domain Group</owners>
+    <projectUrl>https://github.com/domain-group/tools-utilities-testing</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Test utility for rerunning and returning exit code 0/1 based on execution</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>test-team</tags>
+  </metadata>
+</package>

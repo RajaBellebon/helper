@@ -1,0 +1,76 @@
+@objects
+  nav-area 					#main-navigation
+   	logo 					.logo
+   	main-nav 				.main-nav-ul
+  search-area 				.close > .inner-wrap
+  search-button 			#Search
+  surrounding-suburbs		.frm-main.single-checkbox.no-indent
+   	checkbox 				.icheckbox.checked
+   	label 					label
+  place-an-ad 				.hero-place-an-ad a
+  latest-news 				.latest-news-inner-wrap
+   	header 					h2
+   	news-item-* 			.media-wrap img
+  dream-homes 				.dream-homes
+   	header 					h1
+   	list 					.dream-homes-list
+   	item-* 					li a
+
+@set
+ 	imageDir 				../images
+
+= Navigation =
+ 	nav-area:
+ 	 	inside screen ~0px left right
+ 	nav-area.logo:
+ 	 	height ~44px
+ 	 	left-of nav-area.main-nav ~1px
+ 	 	inside nav-area
+ 	nav-area.main-nav:
+ 	 	height ~59px
+ 	 	@on desktop
+ 	 	 	centered horizontally inside screen
+ 	 	 	inside nav-area
+ 	 	@on mobile
+ 	 	 	inside screen 0px left right
+
+= Search =
+ 	search-area:
+ 	 	centered horizontally inside screen
+ 	 	image file ${imageDir}/search-area.png, error 4%
+ 	search-button:
+ 	 	height ~60px
+ 	 	width ~160px 	 	
+
+= Surrounding Suburbs =
+ 	surrounding-suburbs:
+ 	 	height ~18px
+ 	
+ 	surrounding-suburbs.checkbox:
+ 	 	width ~18px
+ 	 	height ~18px
+
+ 	surrounding-suburbs.label:
+ 	 	text is "Surrounding suburbs"
+
+= Place an ad =
+ 	place-an-ad:
+ 	 	@on desktop
+ 	 	 	height ~30px
+ 	 	 	inside screen ~1px right
+ 	 	 	text is "+ Place an ad"
+
+= Latest News =
+ 	latest-news:
+ 	 	centered horizontally inside screen
+ 	 	count visible latest-news.news-item-* is 4
+ 	latest-news.header:
+ 	 	text is "LATEST NEWS"
+
+= Dream Homes =
+ 	dream-homes.header:
+ 	 	text is "Dream Homes" 	 	
+ 	dream-homes.list:
+ 	 	inside screen 0px left right
+ 	 	count visible dream-homes.item-* is 3
+		  

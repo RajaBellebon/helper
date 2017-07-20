@@ -1,0 +1,6 @@
+machine:
+  node:
+    version: 6.9.1
+dependencies:
+  pre:
+    - set -o nounset && printf "%s\n" $NPM_USERNAME $NPM_PASSWORD $NPM_EMAIL | npm login

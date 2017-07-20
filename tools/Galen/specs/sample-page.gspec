@@ -1,0 +1,130 @@
+# Add your css selectors in this part below
+@objects
+  object1       #body
+    subobject1  .css
+  object2      #body1
+
+# Group some elements to apply the same tests to them
+@groups
+  group1      object1, object2 
+
+# Set any variables here 
+@set
+ 	var1 				var
+
+## ranges
+# Exact range
+    width 100px 
+
+# The value between range
+    width 50 to 200 px 
+
+# Greater than
+    width > 40 px 
+
+# Less than
+    width < 40 px 
+
+# Greater than or equals
+    width >= 40 px 
+
+# Less than or equals
+    width <= 40 px 
+
+# Approximate
+    width ~ 100 px
+
+= Section 1 =
+  = Sub section =
+  # Define the screen view (either viewport or screen)
+  ### When using ranges, you can use:
+  ### px, represnts pixels
+  ### screen, represents the whole page area inside browser even that which is not visible
+  ### viewport(represents the visible area on the page
+
+  # Using mobile, desktop
+  @on mobile
+    object1:
+      test1
+  @on desktop
+    object2:
+      test2
+
+  # Check if the element is present/absent
+  object1:
+    present/absent
+
+  # Check if the element is visible
+  object2:
+    visible
+
+  # Check if the element is near to another element
+  object1:
+    near object2 10px left
+
+  # Check if the element is below to another element
+  object2:
+    below object1 10px
+
+  # Check if the element is above
+  object1:
+    above object2 5px to 20px
+
+  # Check if the element is left-of
+  object1:
+    left-of object2 ~5px 
+
+  # Check if the element is right-of
+  object2:
+    right-of object1 ~5px 
+
+  # Check if the element is inside
+  object1:
+    inside object2 10px left right, 20px top bottom 
+
+  # Check if the element is aligned (addition options available)
+  object1:
+    aligned vertically left object2
+
+
+  # Use of parent, self
+  ## parent and self refer to the object itself
+
+  # Check the css property of the element
+  object2:
+    css font-size is "10px" 
+    css font-family starts "Helvetica" 
+    css font-family ends "sans-serif" 
+    css font-family contains "Arial" 
+    css font-family matches ".*Arial.*" 
+
+  # Check the width of the element
+  object1:
+    width ~10px
+
+  # Check the height of the element
+  object2:
+    height 5px
+
+  # Check if the element is centered
+  object2:
+    centered horizontally inside object1 
+
+  # Check if the element is contained in another element
+  object1:
+    contains object2
+
+  # Check if the element is on
+  object2:
+    on bottom right edge object1 10px right, 10px top
+    
+  # Check the color of the element
+  object2:
+    color-scheme ~80% white-gray, ~20% #000-#555-#955 
+
+  # Check the image
+  ## if using a var to your dir image(	imageDir ->../images):
+  image file ${imageDir}/img.png, error 4%
+
+  # Advanced or additional documentation(conditional, js customs scripts)
+  ## http://galenframework.com/docs/reference-galen-spec-language-guide/#AdvancedSpecs

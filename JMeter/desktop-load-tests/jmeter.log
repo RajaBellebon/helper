@@ -1,0 +1,12 @@
+2016/10/24 10:58:59 INFO  - jmeter.util.JMeterUtils: Setting Locale to en_AU 
+2016/10/24 10:58:59 INFO  - jmeter.JMeter: Loading user properties from: C:\apache-jmeter-3.0\bin\user.properties 
+2016/10/24 10:58:59 INFO  - jmeter.JMeter: Loading system properties from: C:\apache-jmeter-3.0\bin\system.properties 
+2016/10/24 10:58:59 FATAL - jmeter.JMeter: An error occurred:  java.lang.IllegalArgumentException: Unknown arg: C:\desktop-load-tests\search-service\DomainSearchService.jmx
+	at org.apache.jmeter.JMeter.initializeProperties(JMeter.java:746)
+	at org.apache.jmeter.JMeter.start(JMeter.java:385)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.apache.jmeter.NewDriver.main(NewDriver.java:259)
+

@@ -1,0 +1,7 @@
+{
+  "@domain-group/generator-fe-library-boilerplate": {
+    "promptValues": {
+      "author": "Martin Jujou <mjujou@gmail.com>"
+    }
+  }
+}
