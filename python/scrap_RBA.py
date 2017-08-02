@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from  more_itertools import unique_everseen
 import fileinput
 
 def google_hits():
@@ -35,7 +36,8 @@ def google_hits_fast_selenium():
     driver = webdriver.Chrome('C:\\Users\\raja.bellebon\\Downloads\\chromedriver_win32\\chromedriver.exe')
     wait = WebDriverWait(driver, 30)
     f = open("C:/Python27/phrases.txt", "r")
-    lines = f.readlines()
+    # to avoid duplicates
+    lines = list(unique_everseen(f.readlines()))
     words = ["hawkish","dovish"]
     val = []
     lin = []
