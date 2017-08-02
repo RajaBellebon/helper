@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-from  more_itertools import unique_everseen
+from more_itertools import unique_everseen
 import fileinput
 
 def google_hits():
