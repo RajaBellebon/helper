@@ -1,4 +1,4 @@
-# fe-e2e-tests
+# tests
 
 ## Summary
 
@@ -8,7 +8,7 @@ Its used to simplify local and browser stack testing
 ## Usage
 
 ```bash
-yarn add @domain-group/fe-e2e-tests
+yarn add 
 ```
 ## Setup
 1. Ensure that you have minimum node version installed and in use.
@@ -29,7 +29,7 @@ Usage can be displayed by using `--help` option:
 ```
   Usage
 
-    $ fe-e2e-tests
+    $ 
   
   Options
   
@@ -60,15 +60,15 @@ Usage can be displayed by using `--help` option:
 
   Examples:
 
-    $ fe-e2e-tests --config path_to_nightwatch.json --browserstack
+    $  --config path_to_nightwatch.json --browserstack
 
-    $ fe-e2e-tests --config path_to_nightwatch.json --url http://stuff.com
+    $ f --config path_to_nightwatch.json --url http://stuff.com
 
-    $ fe-e2e-tests --config path_to_nightwatch.json --test components/articleImages
+    $  --config path_to_nightwatch.json --test components/articleImages
 
-    $ fe-e2e-tests --config path_to_nightwatch.json --group components
+    $  --config path_to_nightwatch.json --group components
 
-    $ fe-e2e-tests --config path_to_nightwatch.json --skiptags data-required,flaky
+    $  --config path_to_nightwatch.json --skiptags data-required,flaky
 ```
 
 ## How to setup nightwatch.conf.js & nightwatch.json files
@@ -76,7 +76,7 @@ Usage can be displayed by using `--help` option:
 Your `nightwatch.conf.js` should contain this on your server:
 
 ```
-const settingsOverride = require('@domain-group/fe-e2e-tests/build/nightwatch');
+const settingsOverride = require('@domain-group//build/nightwatch');
 
 module.exports = settingsOverride(require('./nightwatch.json'));
 ```
@@ -91,13 +91,6 @@ How you set up `nightwatch.json` depends on your use case.
 
 ## Common Documentation
 
-Refer to the [`fe-library-boilerplate-generator@1.1.2`
-docs](https://github.com/domain-group/fe-library-boilerplate-generator/tree/v1.1.2#code-architecture)
-for info on;
-* Library structure
-* Pre-Requisites
-* Setup
-* Deploying
 
 ## Changes and history
 
